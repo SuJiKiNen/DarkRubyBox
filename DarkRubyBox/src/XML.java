@@ -1,4 +1,7 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,6 +34,11 @@ import utils.RomanizationEnum;
  */
 
 public class XML {
+	
+	public static String kanjiFormat="%s";
+	public static String kanaFormat="%s";
+	public static String othersFormat="%s";
+	
 	public static String join(String str,String delimiter,boolean leftBorder,boolean rightBorder){
 		StringBuilder joinStringBuilder = new StringBuilder();
 		for(int i=0; i<str.length(); i++) {
@@ -202,11 +210,11 @@ public class XML {
 				roman = RomanizationEnum.Hepburn.toRomaji(furigana);
 			}
 			if(isKanji) {
-				fmtString.append(specificFmtString("(%s,%r)", surface, furigana, furigana, katagana,roman));
+				fmtString.append(specificFmtString(kanjiFormat, surface, furigana, furigana, katagana,roman));
 			}else if (isHira || isKata ) {
-				fmtString.append(specificFmtString("(%s,%r)", surface, furigana, furigana, katagana,roman));
+				fmtString.append(specificFmtString(kanaFormat, surface, furigana, furigana, katagana,roman));
 			}else {
-				fmtString.append(specificFmtString("%s", surface, furigana, furigana, katagana,roman));
+				fmtString.append(specificFmtString(othersFormat, surface, furigana, furigana, katagana,roman));
 			}
 		}
 		
@@ -220,10 +228,25 @@ public class XML {
 		return fmtString.toString();
 	}
 	public static void main(String [] args) {
+		Properties currentFormat = new Properties();
+		try {
+			currentFormat.load(new FileInputStream("./Config/OutputConfig/AegisubFuriganaJoin.properties"));
+			
+			kanjiFormat = currentFormat.getProperty("KanjiFormat");
+			kanaFormat = currentFormat.getProperty("KanaFormat");
+			othersFormat = currentFormat.getProperty("OthersFormat");
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse("src/furigana.xml");
+			Document document = documentBuilder.parse("./furigana.xml");
 			NodeList words = document.getElementsByTagName("Word");
 			StringBuilder fmtString = new StringBuilder("");
 			for(int i=0; i<words.getLength(); i++) {

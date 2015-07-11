@@ -11,10 +11,4 @@ public class Hiragana {
 		}
 		return kata.toString();
 	}
-	public static boolean isHiragana(String hira){
-		for(int i=0; i < hira.length(); i++) {
-			
-		}
-		return true;
-	}
 }

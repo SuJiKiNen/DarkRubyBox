@@ -6,20 +6,33 @@
 
 package GUI;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import utils.Regex;
+import common.XML;
 
 
 /**
@@ -35,27 +48,30 @@ public class Main extends javax.swing.JFrame {
 	public Main() {
 		initConfig();
 		initComponents();
+		centreWindow(this);
 	}
+
 	public static String removeExtension(String s) {
 
-	    String separator = System.getProperty("file.separator");
-	    String filename;
+		String separator = System.getProperty("file.separator");
+		String filename;
 
-	    // Remove the path upto the filename.
-	    int lastSeparatorIndex = s.lastIndexOf(separator);
-	    if (lastSeparatorIndex == -1) {
-	        filename = s;
-	    } else {
-	        filename = s.substring(lastSeparatorIndex + 1);
-	    }
+		// Remove the path upto the filename.
+		int lastSeparatorIndex = s.lastIndexOf(separator);
+		if (lastSeparatorIndex == -1) {
+			filename = s;
+		} else {
+			filename = s.substring(lastSeparatorIndex + 1);
+		}
 
-	    // Remove the extension.
-	    int extensionIndex = filename.lastIndexOf(".");
-	    if (extensionIndex == -1)
-	        return filename;
+		// Remove the extension.
+		int extensionIndex = filename.lastIndexOf(".");
+		if (extensionIndex == -1)
+			return filename;
 
-	    return filename.substring(0, extensionIndex);
+		return filename.substring(0, extensionIndex);
 	}
+
 	private String readSpecificFormat(String filename, String key) {
 		Properties properties = new Properties();
 		try {
@@ -96,11 +112,17 @@ public class Main extends javax.swing.JFrame {
 
 		outputConfigs = new ArrayList<String>();
 		for (int i = 0; i < files.length; i++) {
-			outputConfigs
-					.add(removeExtension(files[i].getName()));
+			outputConfigs.add(removeExtension(files[i].getName()));
 			//System.out.println(files[i].getName());
 		}
 		//outputConfigs.toArray(new String[ outputConfigs.size() ]);
+	}
+	
+	public static void centreWindow(JFrame frame) {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+	    frame.setLocation(x, y);
 	}
 
 	/** This method is called from within the constructor to
@@ -132,10 +154,13 @@ public class Main extends javax.swing.JFrame {
 		othersFormatLabel = new javax.swing.JLabel();
 		othersFormatText = new javax.swing.JTextField();
 		progressBar = new javax.swing.JProgressBar();
+		kanjiGradeLabel = new javax.swing.JLabel();
+		kanjiGrade = new javax.swing.JComboBox();
 		generateAssButton = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Dark Ruby Box");
+		setResizable(false);
 
 		inputFileLabel.setText("Input File:");
 
@@ -236,7 +261,18 @@ public class Main extends javax.swing.JFrame {
 				+ File.separator + outputFormats.getItemAt(0) + ".properties",
 				"OthersFormat"));
 
+		kanjiGradeLabel.setText("Grade:");
+
+		kanjiGrade.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
+				"1", "2", "3", "4", "5", "6", "7", "8" }));
+
 		generateAssButton.setText("Generate");
+		generateAssButton
+				.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						generateAssButtonActionPerformed(evt);
+					}
+				});
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
 				getContentPane());
@@ -249,155 +285,172 @@ public class Main extends javax.swing.JFrame {
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(inputFileLabel)
-												.addComponent(outputFileLabel)
 												.addGroup(
-														javax.swing.GroupLayout.Alignment.TRAILING,
 														layout.createSequentialGroup()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.TRAILING)
-																				.addComponent(
-																						outputFilePathText,
-																						javax.swing.GroupLayout.Alignment.LEADING,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						813,
-																						Short.MAX_VALUE)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addComponent(
-																										inputFilePathText,
-																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																										747,
-																										javax.swing.GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																										37,
-																										Short.MAX_VALUE)
-																								.addComponent(
-																										inputFileChooseButton,
-																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																										29,
-																										javax.swing.GroupLayout.PREFERRED_SIZE)))
-																.addGap(16, 16,
-																		16))
+																.addComponent(
+																		outputFilePathText,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		884,
+																		Short.MAX_VALUE)
+																.addContainerGap())
 												.addGroup(
 														layout.createSequentialGroup()
 																.addGroup(
 																		layout.createParallelGroup(
 																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																												.addComponent(
-																														outputFormatLabel)
-																												.addComponent(
-																														outputFormatNameLabel)
-																												.addComponent(
-																														kanjiFormatLabel)
-																												.addComponent(
-																														kanaFormatLabel)
-																												.addComponent(
-																														othersFormatLabel))
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																												.addComponent(
-																														othersFormatText,
-																														javax.swing.GroupLayout.DEFAULT_SIZE,
-																														613,
-																														Short.MAX_VALUE)
-																												.addComponent(
-																														kanaFormatText,
-																														javax.swing.GroupLayout.DEFAULT_SIZE,
-																														613,
-																														Short.MAX_VALUE)
-																												.addComponent(
-																														kanjiFormatText,
-																														javax.swing.GroupLayout.DEFAULT_SIZE,
-																														613,
-																														Short.MAX_VALUE)
-																												.addGroup(
-																														javax.swing.GroupLayout.Alignment.TRAILING,
-																														layout.createSequentialGroup()
-																																.addComponent(
-																																		outputFormats,
-																																		0,
-																																		284,
-																																		Short.MAX_VALUE)
-																																.addGap(26,
-																																		26,
-																																		26)
-																																.addComponent(
-																																		newOutputFormatButton)
-																																.addPreferredGap(
-																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																																.addComponent(
-																																		editCurrentOutputFormatButton)
-																																.addGap(12,
-																																		12,
-																																		12)
-																																.addComponent(
-																																		saveCurrentOutputFormatButton)
-																																.addGap(10,
-																																		10,
-																																		10)
-																																.addComponent(
-																																		DeleteCurrentOutputFormatButton))
-																												.addComponent(
-																														outputFormatNameText,
-																														javax.swing.GroupLayout.Alignment.TRAILING,
-																														javax.swing.GroupLayout.DEFAULT_SIZE,
-																														613,
-																														Short.MAX_VALUE)))
+																				.addComponent(
+																						inputFileLabel)
+																				.addComponent(
+																						outputFileLabel)
 																				.addGroup(
 																						javax.swing.GroupLayout.Alignment.TRAILING,
 																						layout.createSequentialGroup()
-																								.addComponent(
-																										progressBar,
-																										javax.swing.GroupLayout.DEFAULT_SIZE,
-																										690,
-																										Short.MAX_VALUE)
+																								.addGroup(
+																										layout.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.TRAILING)
+																												.addGroup(
+																														javax.swing.GroupLayout.Alignment.LEADING,
+																														layout.createSequentialGroup()
+																																.addComponent(
+																																		inputFilePathText,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		828,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addPreferredGap(
+																																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																.addComponent(
+																																		inputFileChooseButton,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		30,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE))
+																												.addGroup(
+																														layout.createSequentialGroup()
+																																.addGroup(
+																																		layout.createParallelGroup(
+																																				javax.swing.GroupLayout.Alignment.TRAILING)
+																																				.addGroup(
+																																						javax.swing.GroupLayout.Alignment.LEADING,
+																																						layout.createSequentialGroup()
+																																								.addComponent(
+																																										progressBar,
+																																										javax.swing.GroupLayout.PREFERRED_SIZE,
+																																										617,
+																																										javax.swing.GroupLayout.PREFERRED_SIZE)
+																																								.addGap(18,
+																																										18,
+																																										18)
+																																								.addComponent(
+																																										kanjiGradeLabel)
+																																								.addPreferredGap(
+																																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																								.addComponent(
+																																										kanjiGrade,
+																																										javax.swing.GroupLayout.PREFERRED_SIZE,
+																																										javax.swing.GroupLayout.DEFAULT_SIZE,
+																																										javax.swing.GroupLayout.PREFERRED_SIZE)
+																																								.addPreferredGap(
+																																										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																								.addComponent(
+																																										generateAssButton,
+																																										javax.swing.GroupLayout.DEFAULT_SIZE,
+																																										124,
+																																										Short.MAX_VALUE))
+																																				.addGroup(
+																																						layout.createSequentialGroup()
+																																								.addGroup(
+																																										layout.createParallelGroup(
+																																												javax.swing.GroupLayout.Alignment.LEADING)
+																																												.addComponent(
+																																														outputFormatLabel)
+																																												.addComponent(
+																																														outputFormatNameLabel)
+																																												.addComponent(
+																																														kanjiFormatLabel)
+																																												.addComponent(
+																																														kanaFormatLabel)
+																																												.addComponent(
+																																														othersFormatLabel))
+																																								.addPreferredGap(
+																																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																								.addGroup(
+																																										layout.createParallelGroup(
+																																												javax.swing.GroupLayout.Alignment.LEADING)
+																																												.addComponent(
+																																														othersFormatText,
+																																														javax.swing.GroupLayout.DEFAULT_SIZE,
+																																														689,
+																																														Short.MAX_VALUE)
+																																												.addComponent(
+																																														kanaFormatText,
+																																														javax.swing.GroupLayout.DEFAULT_SIZE,
+																																														689,
+																																														Short.MAX_VALUE)
+																																												.addComponent(
+																																														kanjiFormatText,
+																																														javax.swing.GroupLayout.DEFAULT_SIZE,
+																																														689,
+																																														Short.MAX_VALUE)
+																																												.addComponent(
+																																														outputFormatNameText,
+																																														javax.swing.GroupLayout.DEFAULT_SIZE,
+																																														689,
+																																														Short.MAX_VALUE)
+																																												.addGroup(
+																																														javax.swing.GroupLayout.Alignment.TRAILING,
+																																														layout.createSequentialGroup()
+																																																.addComponent(
+																																																		outputFormats,
+																																																		0,
+																																																		375,
+																																																		Short.MAX_VALUE)
+																																																.addPreferredGap(
+																																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																.addComponent(
+																																																		newOutputFormatButton)
+																																																.addPreferredGap(
+																																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																.addComponent(
+																																																		editCurrentOutputFormatButton)
+																																																.addPreferredGap(
+																																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																.addComponent(
+																																																		saveCurrentOutputFormatButton)
+																																																.addPreferredGap(
+																																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																.addComponent(
+																																																		DeleteCurrentOutputFormatButton)))))
+																																.addGap(15,
+																																		15,
+																																		15)))
 																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										generateAssButton)))
-																.addGap(17, 17,
-																		17)))
-								.addContainerGap()));
+																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+																.addGap(0, 0, 0)))));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
 								.addContainerGap()
 								.addComponent(inputFileLabel)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGap(14, 14, 14)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.BASELINE)
 												.addComponent(
 														inputFilePathText,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
+														31, Short.MAX_VALUE)
 												.addComponent(
 														inputFileChooseButton))
 								.addPreferredGap(
 										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addComponent(outputFileLabel)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(outputFilePathText,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGap(29, 29, 29)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.BASELINE)
@@ -408,13 +461,13 @@ public class Main extends javax.swing.JFrame {
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE)
 												.addComponent(
-														DeleteCurrentOutputFormatButton)
-												.addComponent(
-														saveCurrentOutputFormatButton)
+														newOutputFormatButton)
 												.addComponent(
 														editCurrentOutputFormatButton)
 												.addComponent(
-														newOutputFormatButton))
+														saveCurrentOutputFormatButton)
+												.addComponent(
+														DeleteCurrentOutputFormatButton))
 								.addGap(17, 17, 17)
 								.addGroup(
 										layout.createParallelGroup(
@@ -463,28 +516,118 @@ public class Main extends javax.swing.JFrame {
 										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING,
-												false)
+												javax.swing.GroupLayout.Alignment.LEADING)
 												.addComponent(
 														progressBar,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addComponent(
-														generateAssButton,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE))
+														33, Short.MAX_VALUE)
+												.addGroup(
+														layout.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.BASELINE)
+																.addComponent(
+																		kanjiGradeLabel)
+																.addComponent(
+																		kanjiGrade,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addComponent(
+																		generateAssButton)))
 								.addContainerGap()));
 
 		pack();
 	}// </editor-fold>
 	//GEN-END:initComponents
 
+	private void generateAssButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		ArrayList<String> lines = new ArrayList<String>();
+		String filename = inputFilePathText.getText();
+		String outputFilename = outputFilePathText.getText();
+		String grade = (String) kanjiGrade.getSelectedItem();
+		String outputFormatName = outputFormatNameText.getText();
+		String configFilename = configStorePath + File.separator + outputFormatName
+				+ ".properties";
+		String curLine = "";
+		try {
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(new FileInputStream(filename),
+							"UTF-8"));
+			while ((curLine = bufferedReader.readLine()) != null) {
+				lines.add(curLine);
+
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Pattern pattern = Pattern
+				.compile("(^Dialogue:\\s*\\d,\\d:\\d\\d:\\d\\d\\.\\d\\d,\\d:\\d\\d:\\d\\d\\.\\d\\d,.*?,.*?,\\d*?,\\d*?,\\d*?,.*?,)(.*)");
+
+		int lineCount = 0;
+		XML.readAPPID();
+		File xmlStoreDir = new File("."+File.separator+"Temp");
+		for(File file: xmlStoreDir.listFiles()) file.delete();
+		
+		for (int i = 0; i < lines.size(); i++) {
+			Matcher matcher = pattern.matcher(lines.get(i));
+			if (matcher.find()) {
+				++lineCount;
+				String prelinePart = matcher.group(1);
+				String lineText = matcher.group(2);
+				
+				Pattern spaceSplitPattern = Pattern.compile(Regex.UNICODE_SPACES);
+				
+				String[] splitText = spaceSplitPattern.split(lineText); 
+				
+				boolean first = true;
+				/*
+				System.out.println(lineText);
+				for(int j=0; j<splitText.length; j++) {
+					System.out.println(j+" "+splitText[j]);
+				}*/
+				
+				for(int j=0; j<splitText.length; j++){
+					String storePath="."+File.separator+"Temp"+File.separator + "line" + String.valueOf(lineCount)+"part"+String.valueOf(j)+".xml";
+					if(splitText[j].equals("")==false) {
+						System.out.println(splitText[j]);
+						XML.fetch(splitText[j], grade, storePath);
+						
+						if(first) {
+							lineText=XML.toFormatString(configFilename, storePath);
+							first = false;
+						}else{
+							lineText=lineText+" "+XML.toFormatString(configFilename, storePath);
+						}	
+					}
+				}
+				
+				/*
+				XML.fetch(lineText, grade, storePath);
+				lineText=XML.toFormatString(configFilename,storePath);
+				*/
+				lines.set(i, prelinePart+lineText);
+			}
+			progressBar.setValue((i + 1) * 100 / lines.size());
+		}
+		try {
+			//File file = new File(outputFilename);
+			BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilename),"UTF-8"));;
+			for (int i = 0; i < lines.size(); i++) {
+				output.write(lines.get(i)
+						+ System.getProperty("line.separator"));
+			}
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void DeleteCurrentOutputFormatButtonActionPerformed(
 			java.awt.event.ActionEvent evt) {
 		String outputFormatName = outputFormatNameText.getText();
-		String filename = configStorePath + File.separator + outputFormatName + ".properties";
+		String filename = configStorePath + File.separator + outputFormatName
+				+ ".properties";
 		File file = new File(filename);
 		try {
 			Files.delete(Paths.get(filename));
@@ -596,7 +739,8 @@ public class Main extends javax.swing.JFrame {
 			inputFilePathText
 					.setText(selectedFile.getAbsolutePath().toString());
 			String outputPathString = selectedFile.getParent();
-			String outputFileNameString = removeExtension(selectedFile.getName()) + "-furigana.ass";
+			String outputFileNameString = removeExtension(selectedFile
+					.getName()) + "-furigana.ass";
 			outputFilePathText.setText(outputPathString + File.separator
 					+ outputFileNameString);
 		}
@@ -605,6 +749,7 @@ public class Main extends javax.swing.JFrame {
 	private void inputFilePathTextActionPerformed(java.awt.event.ActionEvent evt) {
 
 	}
+	
 
 	/**
 	 * @param args the command line arguments
@@ -629,6 +774,8 @@ public class Main extends javax.swing.JFrame {
 	private javax.swing.JTextField kanaFormatText;
 	private javax.swing.JLabel kanjiFormatLabel;
 	private javax.swing.JTextField kanjiFormatText;
+	private javax.swing.JComboBox kanjiGrade;
+	private javax.swing.JLabel kanjiGradeLabel;
 	private javax.swing.JButton newOutputFormatButton;
 	private javax.swing.JLabel othersFormatLabel;
 	private javax.swing.JTextField othersFormatText;

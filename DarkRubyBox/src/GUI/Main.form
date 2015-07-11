@@ -4,6 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Dark Ruby Box"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -23,60 +24,71 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="inputFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="outputFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="outputFilePathText" alignment="0" pref="813" max="32767" attributes="1"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="inputFilePathText" min="-2" pref="747" max="-2" attributes="1"/>
-                              <EmptySpace pref="37" max="32767" attributes="0"/>
-                              <Component id="inputFileChooseButton" min="-2" pref="29" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="outputFilePathText" pref="884" max="32767" attributes="2"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="outputFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="outputFormatNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="kanjiFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="kanaFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="othersFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="othersFormatText" pref="613" max="32767" attributes="0"/>
-                                  <Component id="kanaFormatText" pref="613" max="32767" attributes="0"/>
-                                  <Component id="kanjiFormatText" pref="613" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="outputFormats" pref="284" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                      <Component id="newOutputFormatButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="editCurrentOutputFormatButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                      <Component id="saveCurrentOutputFormatButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                      <Component id="DeleteCurrentOutputFormatButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="outputFormatNameText" alignment="1" pref="613" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="inputFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="outputFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="progressBar" pref="690" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="generateAssButton" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="inputFilePathText" min="-2" pref="828" max="-2" attributes="1"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="inputFileChooseButton" min="-2" pref="30" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="progressBar" min="-2" pref="617" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="kanjiGradeLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="kanjiGrade" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="generateAssButton" pref="124" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="outputFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="outputFormatNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="kanjiFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="kanaFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="othersFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="othersFormatText" pref="689" max="32767" attributes="1"/>
+                                                  <Component id="kanaFormatText" alignment="0" pref="689" max="32767" attributes="1"/>
+                                                  <Component id="kanjiFormatText" alignment="0" pref="689" max="32767" attributes="1"/>
+                                                  <Component id="outputFormatNameText" alignment="0" pref="689" max="32767" attributes="1"/>
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <Component id="outputFormats" pref="375" max="32767" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="newOutputFormatButton" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="editCurrentOutputFormatButton" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="saveCurrentOutputFormatButton" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="DeleteCurrentOutputFormatButton" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -85,50 +97,54 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="inputFileLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="inputFilePathText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="inputFilePathText" alignment="3" pref="31" max="32767" attributes="0"/>
                   <Component id="inputFileChooseButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Component id="outputFileLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="outputFilePathText" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="outputFormatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="outputFormats" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="DeleteCurrentOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="saveCurrentOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="editCurrentOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="newOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="editCurrentOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="saveCurrentOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="DeleteCurrentOutputFormatButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="outputFormatNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="outputFormatNameText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="kanjiFormatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="kanjiFormatText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="kanaFormatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="kanaFormatText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="othersFormatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="othersFormatText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="progressBar" max="32767" attributes="1"/>
-                  <Component id="generateAssButton" alignment="0" max="32767" attributes="1"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="progressBar" pref="33" max="32767" attributes="1"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="kanjiGradeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="kanjiGrade" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="generateAssButton" alignment="3" min="-2" max="-2" attributes="1"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -269,10 +285,34 @@
     </Component>
     <Component class="javax.swing.JProgressBar" name="progressBar">
     </Component>
+    <Component class="javax.swing.JLabel" name="kanjiGradeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Grade:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="kanjiGrade">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="8">
+            <StringItem index="0" value="1"/>
+            <StringItem index="1" value="2"/>
+            <StringItem index="2" value="3"/>
+            <StringItem index="3" value="4"/>
+            <StringItem index="4" value="5"/>
+            <StringItem index="5" value="6"/>
+            <StringItem index="6" value="7"/>
+            <StringItem index="7" value="8"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
     <Component class="javax.swing.JButton" name="generateAssButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Generate"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateAssButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
